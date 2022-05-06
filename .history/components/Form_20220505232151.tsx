@@ -51,10 +51,8 @@ export const Form: FC = () => {
         transaction.add(web3.SystemProgram.transfer({
             fromPubkey: publicKey,
             toPubkey: to.publicKey,
-            lamports: 0.000001,
+            lamports: 100,
         }));
-
-        console.log(to.publicKey)
 
         // const instruction = new web3.TransactionInstruction({
         //     keys: [

@@ -6,7 +6,6 @@ import * as web3 from '@solana/web3.js'
 import { useConnection, useWallet } from '@solana/wallet-adapter-react'
 import { Calendar, Badge } from 'rsuite';
 import {Promise} from 'es6-promise'
-import 'rsuite/dist/rsuite.min.css';
 
 const MOVIE_REVIEW_PROGRAM_ID = 'CenYq6bDRB7p73EjsPEpiYN7uveyPUTdXkDkgUduboaN'
 
@@ -38,47 +37,29 @@ export const Form: FC = () => {
             new web3.PublicKey(MOVIE_REVIEW_PROGRAM_ID)
         )
 
+        const instruction = new web3.TransactionInstruction({
+            keys: [
+                {
+                    pubkey: publicKey,
+                    isSigner: true,
+                    isWritable: false,
+                },
+                {
+                    pubkey: pda,
+                    isSigner: false,
+                    isWritable: true
+                },
+                {
+                    pubkey: web3.SystemProgram.programId,
+                    isSigner: false,
+                    isWritable: false
+                }
+            ],
+            data: buffer,
+            programId: new web3.PublicKey(MOVIE_REVIEW_PROGRAM_ID)
+        })
 
-        const from = web3.Keypair.generate();
-  const airdropSignature = await connection.requestAirdrop(
-    from.publicKey,
-    web3.LAMPORTS_PER_SOL, // 10000000 Lamports in 1 SOL
-  );
-  await connection.confirmTransaction(airdropSignature);
-
-        const to = web3.Keypair.generate();
-
-        transaction.add(web3.SystemProgram.transfer({
-            fromPubkey: publicKey,
-            toPubkey: to.publicKey,
-            lamports: 0.000001,
-        }));
-
-        console.log(to.publicKey)
-
-        // const instruction = new web3.TransactionInstruction({
-        //     keys: [
-        //         {
-        //             pubkey: publicKey,
-        //             isSigner: true,
-        //             isWritable: false,
-        //         },
-        //         {
-        //             pubkey: pda,
-        //             isSigner: false,
-        //             isWritable: true
-        //         },
-        //         {
-        //             pubkey: web3.SystemProgram.programId,
-        //             isSigner: false,
-        //             isWritable: false
-        //         }
-        //     ],
-        //     data: buffer,
-        //     programId: new web3.PublicKey(MOVIE_REVIEW_PROGRAM_ID)
-        // })
-
-        // transaction.add(instruction)
+        transaction.add(instruction)
 
         try {
             let txid = await sendTransaction(transaction, connection)
@@ -144,19 +125,19 @@ export const Form: FC = () => {
                     />
                 </FormControl>
                 <FormControl isRequired>
-                    {/* <FormLabel color='gray.200'>
+                    <FormLabel color='gray.200'>
                        Select Date
-                    </FormLabel> */}
-                    {/* <div style={{ width: 280 }}>
+                    </FormLabel>
+                    <div style={{ width: 280 }}>
     <Calendar compact bordered />{' '}
-  </div> */}
+  </div>
                     {/* <Textarea
                         id='review'
                         color='gray.400'
                         onChange={event => setDescription(event.currentTarget.value)}
                     /> */}
                 </FormControl>
-                {/* <FormControl isRequired>
+                <FormControl isRequired>
                     <FormLabel color='gray.200'>
                         Rating
                     </FormLabel>
@@ -171,9 +152,9 @@ export const Form: FC = () => {
                             <NumberDecrementStepper />
                         </NumberInputStepper>
                     </NumberInput>
-                </FormControl> */}
+                </FormControl>
                 <Button width="full" mt={4} type="submit">
-                   Send
+                    Submit Review
                 </Button>
             </form>
         </Box>

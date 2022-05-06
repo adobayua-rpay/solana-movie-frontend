@@ -6,7 +6,6 @@ import * as web3 from '@solana/web3.js'
 import { useConnection, useWallet } from '@solana/wallet-adapter-react'
 import { Calendar, Badge } from 'rsuite';
 import {Promise} from 'es6-promise'
-import 'rsuite/dist/rsuite.min.css';
 
 const MOVIE_REVIEW_PROGRAM_ID = 'CenYq6bDRB7p73EjsPEpiYN7uveyPUTdXkDkgUduboaN'
 
@@ -38,47 +37,29 @@ export const Form: FC = () => {
             new web3.PublicKey(MOVIE_REVIEW_PROGRAM_ID)
         )
 
+        const instruction = new web3.TransactionInstruction({
+            keys: [
+                {
+                    pubkey: publicKey,
+                    isSigner: true,
+                    isWritable: false,
+                },
+                {
+                    pubkey: pda,
+                    isSigner: false,
+                    isWritable: true
+                },
+                {
+                    pubkey: web3.SystemProgram.programId,
+                    isSigner: false,
+                    isWritable: false
+                }
+            ],
+            data: buffer,
+            programId: new web3.PublicKey(MOVIE_REVIEW_PROGRAM_ID)
+        })
 
-        const from = web3.Keypair.generate();
-  const airdropSignature = await connection.requestAirdrop(
-    from.publicKey,
-    web3.LAMPORTS_PER_SOL, // 10000000 Lamports in 1 SOL
-  );
-  await connection.confirmTransaction(airdropSignature);
-
-        const to = web3.Keypair.generate();
-
-        transaction.add(web3.SystemProgram.transfer({
-            fromPubkey: publicKey,
-            toPubkey: to.publicKey,
-            lamports: 0.000001,
-        }));
-
-        console.log(to.publicKey)
-
-        // const instruction = new web3.TransactionInstruction({
-        //     keys: [
-        //         {
-        //             pubkey: publicKey,
-        //             isSigner: true,
-        //             isWritable: false,
-        //         },
-        //         {
-        //             pubkey: pda,
-        //             isSigner: false,
-        //             isWritable: true
-        //         },
-        //         {
-        //             pubkey: web3.SystemProgram.programId,
-        //             isSigner: false,
-        //             isWritable: false
-        //         }
-        //     ],
-        //     data: buffer,
-        //     programId: new web3.PublicKey(MOVIE_REVIEW_PROGRAM_ID)
-        // })
-
-        // transaction.add(instruction)
+        transaction.add(instruction)
 
         try {
             let txid = await sendTransaction(transaction, connection)
@@ -90,38 +71,38 @@ export const Form: FC = () => {
         }
     }
 
-    // function getTodoList(date: any) {
-    //     const day = dateFns.getDate(date);
+    function getTodoList(date: any) {
+        const day = dateFns.getDate(date);
       
-    //     switch (day) {
-    //       case 10:
-    //         return [
-    //           { time: '10:30 am', title: 'Meeting' },
-    //           { time: '12:00 pm', title: 'Lunch' }
-    //         ];
-    //       case 15:
-    //         return [
-    //           { time: '09:30 pm', title: 'Products Introduction Meeting' },
-    //           { time: '12:30 pm', title: 'Client entertaining' },
-    //           { time: '02:00 pm', title: 'Product design discussion' },
-    //           { time: '05:00 pm', title: 'Product test and acceptance' },
-    //           { time: '06:30 pm', title: 'Reporting' },
-    //           { time: '10:00 pm', title: 'Going home to walk the dog' }
-    //         ];
-    //       default:
-    //         return [];
-    //     }
-    //   }
+        switch (day) {
+          case 10:
+            return [
+              { time: '10:30 am', title: 'Meeting' },
+              { time: '12:00 pm', title: 'Lunch' }
+            ];
+          case 15:
+            return [
+              { time: '09:30 pm', title: 'Products Introduction Meeting' },
+              { time: '12:30 pm', title: 'Client entertaining' },
+              { time: '02:00 pm', title: 'Product design discussion' },
+              { time: '05:00 pm', title: 'Product test and acceptance' },
+              { time: '06:30 pm', title: 'Reporting' },
+              { time: '10:00 pm', title: 'Going home to walk the dog' }
+            ];
+          default:
+            return [];
+        }
+      }
 
-    // function renderCell(date: any) {
-    //     const list = getTodoList(date);
+    function renderCell(date: any) {
+        const list = getTodoList(date);
       
-    //     if (list.length) {
-    //       return <Badge className="calendar-todo-item-badge" />;
-    //     }
+        if (list.length) {
+          return <Badge className="calendar-todo-item-badge" />;
+        }
       
-    //     return null;
-    //   }
+        return null;
+      }
 
     return (
         <Box
@@ -144,19 +125,16 @@ export const Form: FC = () => {
                     />
                 </FormControl>
                 <FormControl isRequired>
-                    {/* <FormLabel color='gray.200'>
-                       Select Date
-                    </FormLabel> */}
-                    {/* <div style={{ width: 280 }}>
-    <Calendar compact bordered />{' '}
-  </div> */}
-                    {/* <Textarea
+                    <FormLabel color='gray.200'>
+                        Add your review
+                    </FormLabel>
+                    <Textarea
                         id='review'
                         color='gray.400'
                         onChange={event => setDescription(event.currentTarget.value)}
-                    /> */}
+                    />
                 </FormControl>
-                {/* <FormControl isRequired>
+                <FormControl isRequired>
                     <FormLabel color='gray.200'>
                         Rating
                     </FormLabel>
@@ -171,9 +149,9 @@ export const Form: FC = () => {
                             <NumberDecrementStepper />
                         </NumberInputStepper>
                     </NumberInput>
-                </FormControl> */}
+                </FormControl>
                 <Button width="full" mt={4} type="submit">
-                   Send
+                    Submit Review
                 </Button>
             </form>
         </Box>

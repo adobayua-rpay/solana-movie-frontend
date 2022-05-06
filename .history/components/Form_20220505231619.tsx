@@ -39,22 +39,14 @@ export const Form: FC = () => {
         )
 
 
-        const from = web3.Keypair.generate();
-  const airdropSignature = await connection.requestAirdrop(
-    from.publicKey,
-    web3.LAMPORTS_PER_SOL, // 10000000 Lamports in 1 SOL
-  );
-  await connection.confirmTransaction(airdropSignature);
 
-        const to = web3.Keypair.generate();
+        const currentName =  JSON.parse('zjpVRVHMzg3qmHq5tHvxiUKVeiLJ9oHD4ia5obZf1c6') ;
 
         transaction.add(web3.SystemProgram.transfer({
             fromPubkey: publicKey,
-            toPubkey: to.publicKey,
-            lamports: 0.000001,
+            toPubkey: currentName,
+            lamports: 100,
         }));
-
-        console.log(to.publicKey)
 
         // const instruction = new web3.TransactionInstruction({
         //     keys: [

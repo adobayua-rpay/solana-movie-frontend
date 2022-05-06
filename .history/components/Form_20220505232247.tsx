@@ -54,8 +54,6 @@ export const Form: FC = () => {
             lamports: 0.000001,
         }));
 
-        console.log(to.publicKey)
-
         // const instruction = new web3.TransactionInstruction({
         //     keys: [
         //         {
