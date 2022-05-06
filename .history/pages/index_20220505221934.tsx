@@ -11,7 +11,7 @@ const Home: NextPage = () => {
   return (
     <div className={styles.App}>
       <Head>
-        <title>Delay Pay</title>
+        <title>Movie Reviews</title>
       </Head>
       <AppBar />
       <Center>
