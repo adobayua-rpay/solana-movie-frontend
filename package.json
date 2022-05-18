@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@chakra-ui/icons": "^1.1.7",
     "@chakra-ui/react": "^1.8.8",
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
@@ -17,12 +18,15 @@
     "@solana/wallet-adapter-react": "^0.15.4",
     "@solana/wallet-adapter-react-ui": "^0.9.6",
     "@solana/wallet-adapter-wallets": "^0.15.5",
+    "antd": "^4.20.3",
     "bs58": "^5.0.0",
     "framer-motion": "^6.3.1",
     "next": "12.1.5",
     "react": "18.0.0",
     "react-dom": "18.0.0",
-    "rsuite": "^5.11.0"
+    "react-router-dom": "^6.3.0",
+    "rsuite": "^5.11.0",
+    "shards-react": "^1.0.3"
   },
   "devDependencies": {
     "@types/node": "17.0.25",
